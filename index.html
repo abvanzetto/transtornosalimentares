@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compreendendo Transtornos Alimentares</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #FFF8F0;
+            background-image: url('fundo.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .container {
+            background: #ffffff;
+            max-width: 680px;
+            width: 100%;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        /* Telas */
+        .tela {
+            display: none;
+        }
+        .tela.ativa {
+            display: block;
+        }
+
+        /* Tela Inicial */
+        .titulo-principal {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .descricao {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 2rem;
+        }
+
+        .btn-iniciar {
+            display: inline-block;
+            background-color: #829200;
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.85rem 2.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .btn-iniciar:hover {
+            background-color: #6e7c00;
+        }
+
+        /* Tela Questão */
+        .cabecalho-questao {
+            font-size: 0.8rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.25rem;
+        }
+
+        .referencia-curta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1.25rem;
+            font-style: italic;
+        }
+
+        .frase {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            margin-bottom: 1.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .botoes-resposta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .botoes-resposta button {
+            flex: 1;
+            padding: 0.85rem 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: #fff;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .botoes-resposta button:hover:not(:disabled) {
+            border-color: #829200;
+            background: #f4f7e6;
+        }
+        .botoes-resposta button:disabled {
+            cursor: default;
+            opacity: 0.6;
+        }
+
+        /* Feedback */
+        .feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.25rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .feedback.visivel {
+            display: block;
+        }
+        .feedback.acertou {
+            background: #f0f4df;
+            border-left: 4px solid #829200;
+        }
+        .feedback.errou {
+            background: #fdf3ea;
+            border-left: 4px solid #C06E00;
+        }
+        .feedback .rotulo {
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.35rem;
+        }
+        .feedback .rotulo.acertou {
+            color: #829200;
+        }
+        .feedback .rotulo.errou {
+            color: #C06E00;
+        }
+
+        .acoes-rodape {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-voltar {
+            display: none;
+            background-color: transparent;
+            color: #C06E00;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #C06E00;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-voltar.visivel {
+            display: inline-block;
+        }
+        .btn-voltar:hover {
+            background-color: #C06E00;
+            color: #fff;
+        }
+
+        .btn-proximo {
+            display: none;
+            background-color: #829200;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .btn-proximo.visivel {
+            display: inline-block;
+        }
+        .btn-proximo:hover {
+            background-color: #6e7c00;
+        }
+
+        /* Rodapé da questão (ref completa) */
+        .ref-completa {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            font-size: 0.7rem;
+            color: #999;
+            line-height: 1.4;
+        }
+
+        /* Tela Final */
+        .titulo-final {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 1rem;
+            letter-spacing: -0.01em;
+        }
+
+        .pontuacao {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+        }
+        .pontuacao strong {
+            color: #829200;
+        }
+
+        .mensagem-final {
+            font-size: 1rem;
+            color: #444;
+            margin-bottom: 2rem;
+            padding: 1.25rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .btn-reiniciar {
+            display: inline-block;
+            background-color: transparent;
+            color: #829200;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border: 2px solid #829200;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-reiniciar:hover {
+            background-color: #829200;
+            color: #fff;
+        }
+
+        /* Responsivo */
+        @media (max-width: 500px) {
+            .container {
+                padding: 1.75rem 1.25rem;
+                border-radius: 12px;
+            }
+            .titulo-principal {
+                font-size: 1.4rem;
+            }
+            .frase {
+                font-size: 1.05rem;
+            }
+            .botoes-resposta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- TELA INICIAL -->
+        <div id="tela-inicial" class="tela ativa">
+            <h1 class="titulo-principal">Compreendendo transtornos alimentares</h1>
+            <p class="descricao">
+                Teste seu conhecimento respondendo o quiz sobre mitos e verdades sobre os transtornos alimentares.
+            </p>
+            <button class="btn-iniciar" onclick="iniciarQuiz()">Iniciar Quiz</button>
+        </div>
+
+        <!-- TELA QUESTÃO -->
+        <div id="tela-questao" class="tela">
+            <div class="cabecalho-questao">
+                <span id="contador">Questão 1 de 8</span>
+            </div>
+            <div class="referencia-curta" id="ref-curta">Gonçalves et al., 2013</div>
+            <p class="frase" id="frase">Carregando...</p>
+
+            <div class="botoes-resposta">
+                <button id="btn-mito" onclick="responder('mito')">Mito</button>
+                <button id="btn-verdade" onclick="responder('verdade')">Verdade</button>
+            </div>
+
+            <div class="feedback" id="feedback">
+                <span class="rotulo" id="rotulo-feedback"></span>
+                <span id="explicacao"></span>
+            </div>
+
+            <div class="acoes-rodape">
+                <button class="btn-voltar" id="btn-voltar" onclick="voltarQuestao()">← Voltar</button>
+                <button class="btn-proximo" id="btn-proximo" onclick="proximaQuestao()">Próxima</button>
+            </div>
+
+            <div class="ref-completa" id="ref-completa"></div>
+        </div>
+
+        <!-- TELA FINAL -->
+        <div id="tela-final" class="tela">
+            <h2 class="titulo-final">Quiz concluído</h2>
+            <p class="pontuacao">Você acertou <strong id="acertos-final">0</strong> de <strong id="total-final">8</strong> questões.</p>
+            <div class="mensagem-final">
+                Obrigado por participar. Reconhecer os sinais pode fazer a diferença.
+            </div>
+            <button class="btn-reiniciar" onclick="reiniciar()">Refazer Quiz</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ===================== DADOS DAS QUESTÕES =====================
+        const questoes = [
+            {
+                frase: "Ambiente familiar não é um fator de risco para os transtornos alimentares.",
+                resposta: "mito",
+                explicacao: "Mito! A individualização das refeições pelos membros da família com consumo de alimentos diferentes, em locais e horários distintos, pode ser resultado tanto do excesso de atividades dos adolescentes quanto da desordem alimentar no âmbito familiar (Gonçalves et al., 2013).",
+                refCurta: "Gonçalves et al., 2013",
+                refCompleta: "Gonçalves, J. A., et al. (2013). Transtornos alimentares na infância e na adolescência. Revista Paulista de Pediatria, 31(1), 96–103."
+            },
+            {
+                frase: "Adolescentes com transtornos alimentares tendem a apresentar, com mais frequência, início da atividade sexual antes dos 16 anos.",
+                resposta: "verdade",
+                explicacao: "Verdade! A associação entre transtornos alimentares e início precoce da atividade sexual pode estar relacionada a fatores como baixa autoestima, busca por aceitação e validação, dificuldades emocionais, impulsividade e conflitos familiares ou sociais (Gonçalves et al., 2013).",
+                refCurta: "Gonçalves et al., 2013",
+                refCompleta: "Gonçalves, J. A., et al. (2013). Transtornos alimentares na infância e na adolescência. Revista Paulista de Pediatria, 31(1), 96–103."
+            },
+            {
+                frase: "Os transtornos alimentares não se associam a problemas nutricionais e à saúde bucal.",
+                resposta: "mito",
+                explicacao: "Mito! Os transtornos alimentares podem prejudicar o crescimento e o estado nutricional, causando déficit no desenvolvimento físico e no ganho de peso. Além disso, podem provocar danos à boca e aos dentes devido à deficiência de nutrientes e a comportamentos inadequados relacionados à alimentação, como vômitos frequentes e má higiene bucal (Gonçalves et al., 2013).",
+                refCurta: "Gonçalves et al., 2013",
+                refCompleta: "Gonçalves, J. A., et al. (2013). Transtornos alimentares na infância e na adolescência. Revista Paulista de Pediatria, 31(1), 96–103."
+            },
+            {
+                frase: "A bulimia nervosa está frequentemente associada a outros problemas de saúde mental.",
+                resposta: "verdade",
+                explicacao: "Verdade! Estudos com adolescentes demonstraram que a bulimia nervosa está significativamente relacionada a comorbidades psicológicas, como depressão, transtorno bipolar, ansiedade e alterações comportamentais, manifestados na vida adulta (Gonçalves et al., 2013).",
+                refCurta: "Gonçalves et al., 2013",
+                refCompleta: "Gonçalves, J. A., et al. (2013). Transtornos alimentares na infância e na adolescência. Revista Paulista de Pediatria, 31(1), 96–103."
+            },
+            {
+                frase: "Adolescentes fazem parte de um grupo de risco para o desenvolvimento de transtornos alimentares.",
+                resposta: "verdade",
+                explicacao: "Verdade! Nesta fase de intenso desenvolvimento ocorrem modificações psíquicas, mentais e físicas, o que pode causar insatisfações corporais até que tal desenvolvimento termine (Uzunian & Vitalle, 2015).",
+                refCurta: "Uzunian & Vitalle, 2015",
+                refCompleta: "Uzunian, L.G. & Vitalle, M.S.S. (2015). Habilidades sociais: fator de proteção contra transtornos alimentares em adolescentes. Ciência & Saúde Coletiva, 20(11):3495-3508."
+            },
+            {
+                frase: "O surgimento e a manutenção dos transtornos alimentares podem ser influenciados pelo padrão de beleza da sociedade atual e pela mídia.",
+                resposta: "verdade",
+                explicacao: "Verdade! O surgimento e a manutenção dos transtornos alimentares podem ser influenciados pelo padrão de beleza da sociedade atual, pelas mensagens e valores passados pela mídia, pela influência dos pares e pelas emoções que, quando não administradas corretamente, agravam e predispõem ao quadro (Uzunian & Vitalle, 2015).",
+                refCurta: "Uzunian & Vitalle, 2015",
+                refCompleta: "Uzunian, L.G. & Vitalle, M.S.S. (2015). Habilidades sociais: fator de proteção contra transtornos alimentares em adolescentes. Ciência & Saúde Coletiva, 20(11):3495-3508."
+            },
+            {
+                frase: "Não há como prevenir transtornos alimentares.",
+                resposta: "mito",
+                explicacao: "Mito! A prevenção existe e é muito importante. Crianças e adolescentes que desenvolvem habilidades para lidar com pressão social, autoestima, emoções e imagem corporal apresentam um importante fator de proteção. A psicoeducação e o fortalecimento dessas competências ajudam a reduzir o risco de desenvolvimento de transtornos alimentares (Uzunian & Vitalle, 2015).",
+                refCurta: "Uzunian & Vitalle, 2015",
+                refCompleta: "Uzunian, L.G. & Vitalle, M.S.S. (2015). Habilidades sociais: fator de proteção contra transtornos alimentares em adolescentes. Ciência & Saúde Coletiva, 20(11):3495-3508."
+            },
+            {
+                frase: "Técnicas de respiração como o Mindfulness não trazem benefícios para indivíduos com transtornos alimentares.",
+                resposta: "mito",
+                explicacao: "Mito! As técnicas trazem resultados que sugerem que tais intervenções trazem benefícios para os sujeitos, principalmente no que diz respeito ao comportamento alimentar e aos aspectos psicoemocionais (Barbosa, Penaforte & Silva, 2020).",
+                refCurta: "Barbosa, Penaforte & Silva, 2020",
+                refCompleta: "Barbosa, M.R., Penaforte, M.R.O. & Silva, A.F.S (2020). Mindfulness, mindful eating e comer intuitivo na abordagem da obesidade e transtornos alimentares. SMAD, Rev. Eletrônica Saúde Mental Álcool Drog. 16(3):118-135."
+            }
+        ];
+
+        // ===================== ESTADO =====================
+        let indiceAtual = 0;
+        let acertos = 0;
+        let respondeu = false;
+
+        // ===================== FUNÇÕES DE CONTROLE =====================
+
+        function mostrarTela(id) {
+            document.querySelectorAll('.tela').forEach(t => t.classList.remove('ativa'));
+            document.getElementById(id).classList.add('ativa');
+        }
+
+        function iniciarQuiz() {
+            indiceAtual = 0;
+            acertos = 0;
+            respondeu = false;
+            mostrarTela('tela-questao');
+            carregarQuestao();
+        }
+
+        function carregarQuestao() {
+            const q = questoes[indiceAtual];
+            respondeu = false;
+
+            document.getElementById('contador').textContent = `Questão ${indiceAtual + 1} de ${questoes.length}`;
+            document.getElementById('ref-curta').textContent = q.refCurta;
+            document.getElementById('frase').textContent = q.frase;
+            document.getElementById('ref-completa').textContent = q.refCompleta;
+
+            // Reset feedback
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('visivel', 'acertou', 'errou');
+            document.getElementById('explicacao').textContent = '';
+            document.getElementById('rotulo-feedback').textContent = '';
+
+            // Botões
+            document.getElementById('btn-mito').disabled = false;
+            document.getElementById('btn-verdade').disabled = false;
+            document.getElementById('btn-mito').style.borderColor = '#ddd';
+            document.getElementById('btn-verdade').style.borderColor = '#ddd';
+
+            // Botão voltar: só aparece se não for a primeira questão
+            const btnVoltar = document.getElementById('btn-voltar');
+            if (indiceAtual > 0) {
+                btnVoltar.classList.add('visivel');
+            } else {
+                btnVoltar.classList.remove('visivel');
+            }
+
+            // Próximo botão
+            document.getElementById('btn-proximo').classList.remove('visivel');
+        }
+
+        function responder(respostaUsuario) {
+            if (respondeu) return;
+            respondeu = true;
+
+            const q = questoes[indiceAtual];
+            const acertou = respostaUsuario === q.resposta;
+
+            if (acertou) acertos++;
+
+            // Desabilitar botões
+            document.getElementById('btn-mito').disabled = true;
+            document.getElementById('btn-verdade').disabled = true;
+
+            // Destacar o botão escolhido
+            const btnEscolhido = document.getElementById(respostaUsuario === 'mito' ? 'btn-mito' : 'btn-verdade');
+            const cor = acertou ? '#829200' : '#C06E00';
+            btnEscolhido.style.borderColor = cor;
+            btnEscolhido.style.background = acertou ? '#f0f4df' : '#fdf3ea';
+
+            // Mostrar feedback
+            const feedback = document.getElementById('feedback');
+            feedback.classList.add('visivel', acertou ? 'acertou' : 'errou');
+            document.getElementById('rotulo-feedback').textContent = acertou ? '✓ Correto!' : '✗ Incorreto.';
+            document.getElementById('rotulo-feedback').className = 'rotulo ' + (acertou ? 'acertou' : 'errou');
+            document.getElementById('explicacao').textContent = q.explicacao;
+
+            // Mostrar botão próximo
+            document.getElementById('btn-proximo').classList.add('visivel');
+        }
+
+        function voltarQuestao() {
+            if (indiceAtual > 0) {
+                indiceAtual--;
+                carregarQuestao();
+            }
+        }
+
+        function proximaQuestao() {
+            indiceAtual++;
+            if (indiceAtual < questoes.length) {
+                carregarQuestao();
+            } else {
+                // Final
+                document.getElementById('acertos-final').textContent = acertos;
+                document.getElementById('total-final').textContent = questoes.length;
+                mostrarTela('tela-final');
+            }
+        }
+
+        function reiniciar() {
+            iniciarQuiz();
+        }
+    </script>
+
+</body>
+</html>
